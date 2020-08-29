@@ -32,7 +32,10 @@
     </block>
     <!-- 有数据,遍历数据 显示的是curlist-->
     <view class="item" wx:for="{{curLists}}" wx:key="index">
+    <!-- 使用flex布局 -->
+    <!-- bindtouchstart 点击开始 bindtouchmove 拖动 bindtouchend 点击结束 -->
       <view class="content" style="{{item.txtStyle}}" data-index="{{index}}" bindtouchstart="touchS" bindtouchmove="touchM" bindtouchend="touchE">
+        <!-- 如果state为0就说明这个todo没有做完，如果是1则做完了 -->
         <icon class="icon-small" type="{{item.status === '0'?'circle':'success'}}" size="23" data-item="{{item.id}}" bindtap="changeTodo"></icon>
         <text class="title {{item.status === '1'?'over':''}}">{{item.title}}</text>
         <text class="time">{{api.formatTime(item.id)}}</text>

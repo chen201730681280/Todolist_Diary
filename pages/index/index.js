@@ -146,6 +146,9 @@ Page({
       url: '../logs/logs'
     })
   },
+  /**
+   * 改变todo的状态
+   */
   changeTodo: function (e) {
     var _this = this
     var item = e.currentTarget.dataset.item
@@ -165,6 +168,7 @@ Page({
             duration: 1000
         });
         } else {
+          // 交互提示框
           wx.showModal({
             title: '',
             content: '该任务已完成，确定重新开始任务？',
@@ -283,9 +287,15 @@ Page({
       })
     }
   },
+  /**
+   * 点击all，或者点击todo，或者点击finish
+   */
   showStatus: function (e) {
+    // 获取自定义属性data-status
     var st = e.currentTarget.dataset.status
+    // 如果现在显示栏的status就是点击的status，则返回
     if (this.data.status === st) return
+    // 如果st为all
     if (st === '1') {
       this.setData({
         status: st,
@@ -293,13 +303,17 @@ Page({
       })
       return
     }
+    // 如果不是all
     this.setData({
       status: st,
       curLists: this.data.lists.filter(item => +item.status === (st - 2))
     })
   },
+  /**
+   * 开始触摸
+   */
   touchS: function (e) {
-    // console.log('开始：' + JSON.stringify(e))
+     console.log('开始：' )
     // 是否只有一个触摸点
     if(e.touches.length === 1){
       this.setData({
@@ -309,7 +323,7 @@ Page({
     }
   },
   touchM: function (e) {
-    // console.log('移动：' + JSON.stringify(e))
+     console.log('移动：' )
     var _this = this
     if(e.touches.length === 1){
      // 触摸点的X坐标
@@ -340,7 +354,7 @@ Page({
     }
   },
   touchE: function (e) {
-    // console.log('停止：' + JSON.stringify(e))
+     console.log('停止：' )
     var _this = this
     if(e.changedTouches.length === 1){
       // 手指移动结束后触摸点位置的X坐标
@@ -390,11 +404,15 @@ Page({
     })
     
   },
-
+  /**
+   * 页面一进入时
+   */
   onLoad: function () {
     var _this = this
+    // 获取现在的时间
     var date = new Date();
     var year = date.getFullYear()
+    // 因为是从0开始的
     var month = date.getMonth() + 1
     var day = date.getDate()
     var hour = date.getHours()
@@ -421,7 +439,7 @@ Page({
       startHour: surplusHour[0][0],
       endHour: surplusHour[1][0],
     })
-
+    // 获取缓存，包括所有的todo
     wx.getStorage({
       key: 'lists',
       success: function(res) {
@@ -628,6 +646,7 @@ Page({
       orderData: dateStr
     })
   },
+  // 获取用户信息
   getUserInfo: function(e) {
     console.log(e)
     app.globalData.userInfo = e.detail.userInfo
